@@ -80,8 +80,8 @@
                   <div class="entry">
 
                     <div class="thumbnail-attachment">
-                      <a href="/services#tab-{{ $cat->id }}" class="overlink"></a>
-                      <a href="/services#tab-{{ $cat->id }}"><img src="{{ asset('uploads/categories/'.$cat->cat_image) }}" class="footer_image" alt=""></a>
+                      <a href="{{ route('frontend_services') }}#tab-{{ $cat->id }}" class="overlink"></a>
+                      <a href="{{ route('frontend_services') }}#tab-{{ $cat->id }}"><img src="{{ asset('uploads/categories/'.$cat->cat_image) }}" class="footer_image" alt=""></a>
                     </div>
 
                     <div class="entry-body">
@@ -93,7 +93,7 @@
                         <span  class="entry-cat"> {{ substr($cat->desc,0,10) }}</span>
 
                       </div>
-                      <h5 class="entry-title"><strong><a href="/services#tab-{{ $cat->id }}">{{ $cat->name }}</a></strong></h5>
+                      <h5 class="entry-title"><strong><a href="{{ route('frontend_services') }}#tab-{{ $cat->id }}">{{ $cat->name }}</a></strong></h5>
 
                     </div>
 

@@ -152,7 +152,7 @@ class CatalogsController extends Controller
         File::makeDirectory($image_path, $mode = 0777, true, true);
 
         $catalog = Catalog::findOrfail($id);
-        $path = $image_path . $catalogs->catalog_img;
+        $path = $image_path . $catalog->catalog_img;
         if(file_exists($path)) {
             File::delete($path);
         }
