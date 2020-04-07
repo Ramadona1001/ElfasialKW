@@ -165,7 +165,7 @@ class CartController extends Controller
              $order->mainorder_id = $mainOrder->id;
              $order->name = $item->name;
              $order->order_id = $item->id;
-             $order->quantity = $item->quantity;
+             $order->quantity = $item->qty;
              $order->price = $item->price;
              $order->save();
          }
