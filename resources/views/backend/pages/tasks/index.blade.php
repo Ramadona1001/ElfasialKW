@@ -49,11 +49,11 @@
                             @foreach ($tasks as $index => $task)
                             <tr>
                                 <td class="tdesign">{{ $index+1 }}</td>
-                                <td class="tdesign">{{ $task->customer->name }}</td>
+                                <td class="tdesign">{{ $task->customer_phone }}</td>
                                 <td class="tdesign">{{ $task->user->name }}</td>
-                                <td class="tdesign"><a href="{{ route('show_orders',$task->order_id) }}">{{ $task->order->order_code }}</a></td>
-                                <td class="tdesign"><a href="{{ route('show_department_tasks',$task->department_task_id) }}">{{ $task->departmentTaskName($task->department_task_id)->name }}</a></td>
-                                <td class="tdesign"><a href="{{ route('show_departments',$task->department_id) }}">{{ $task->departmentName($task->department_id)->name }}</a></td>
+                                <td class="tdesign">{{ $task->mainorder->code }}</td>
+                                <td class="tdesign">{{ $task->departmentTaskName($task->department_task_id)->name }}</td>
+                                <td class="tdesign">{{ $task->departmentName($task->department_id)->name }}</td>
                                 <td class="tdesign">{{ $task->order_task }}</td>
                                 <td class="tdesign">{{ $task->task_date }}</td>
                                 <td class="tdesign">
@@ -62,14 +62,6 @@
                                 <td class="tdesign">{{ $task->notes }}</td>
                                 <td class="tdesign">
                                     
-                                    @can('show_tasks')
-                                    <a href="{{ route('show_tasks',$task->id) }}" class="pinkbutton">@lang('tr.View')</a>&nbsp;
-                                    @endcan
-
-                                    @can('edit_tasks')
-                                    {{-- <a href="{{ route('edit_tasks',$task->id) }}" class="bluebutton">@lang('tr.Edit')</a>&nbsp; --}}
-                                    @endcan
-
                                     @can('delete_tasks')
                                     <a onclick="return confirm('Are You Sure ?')" class="redbutton" href="{{ route('delete_tasks',$task->id) }}">@lang('tr.Delete')</a>
                                     @endcan

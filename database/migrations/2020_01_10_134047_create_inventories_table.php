@@ -18,12 +18,10 @@ class CreateInventoriesTable extends Migration
             $table->string('en_name');
             $table->string('ar_name');
             $table->string('quantity');
-            $table->string('orignal_price');
             $table->string('price');
             $table->string('add_value');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('total_orignal_price');
             $table->string('total_price');
             $table->string('inventory_image');
             $table->text('en_desc');

@@ -49,7 +49,7 @@
                 <p>{{ $cat->desc }}</p>
               </div>
             </div>
-            <div class="icons-img-col" data-bg="{{ asset('categories/'.$cat->cat_image) }}"></div>
+            <div class="icons-img-col" data-bg="{{ asset('uploads/categories/'.$cat->cat_image) }}"></div>
 
 
           </div>

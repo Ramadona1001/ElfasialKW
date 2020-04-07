@@ -73,14 +73,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="price">@lang('tr.Price')</label>
-                                        <input type="text" name="price" id="price" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
+                           
         
                             <div class="row">
                                 <div class="col-lg-12">

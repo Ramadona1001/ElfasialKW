@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-
+@php($langName = \Lang::getLocale().'_name')
 
 <div class="row">
     <div class="col-xl-12 order-lg-2 order-xl-1">
@@ -24,7 +24,7 @@
             <div class="kt-portlet__body kt-portlet__body--fit">
                 <div class="col-xl-12 order-lg-2 order-xl-1">
                     <hr>
-                    <img src="{{ asset('catalogs/'.$catalog->catalog_img) }}" class="img-responsive img-thumbnail" style="width:200px;display:block;margin-left:auto;margin-right:auto;"><hr>
+                    <img src="{{ asset('/uploads/catalogs/'.$catalog->catalog_img) }}" class="img-responsive img-thumbnail" style="width:200px;display:block;margin-left:auto;margin-right:auto;"><hr>
                     <div class="row">
                         <div class="col-lg-12">
                             <p>@lang('tr.Catalog Name')</p>
@@ -41,14 +41,37 @@
                             <p style="background: #eee; padding: 10px; color: black;">{{ $catalog->categoryName($catalog->categories_id)->name }}</p>
                         </div>
 
-                        <div class="col-lg-12">
-                            <p>@lang('tr.Price')</p>
-                            <p style="background: #eee; padding: 10px; color: black;">{{ $catalog->price.' '.$system_currency }}</p>
-                        </div>
+                        
                         
                     </div>
                     
+                    @if (count($items) > 0)
                     <hr>
+                    <h5>@lang('tr.Items')</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>@lang('tr.Image')</th>
+                            <th>@lang('tr.Name')</th>
+                            <th>@lang('tr.Price')</th>
+                            <th>@lang('tr.Delete')</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($items as $item)
+                                <tr>
+                                    <td class="tdesign">
+                                        <img src="{{ asset('uploads/itemsinventories/'.$item->iteminventory->inventory_image) }}" alt="" srcset="" style="width:100px;height:50px;">    
+                                    </td>
+                                    <td class="tdesign">{{$item->iteminventory->$langName}}</td>
+                                    <td class="tdesign">{{$item->iteminventory->price}}</td>
+                                    <td class="tdesign">
+                                        <a href="{{ route('delete_items',$item->id) }}" onclick="return confirm('@lang('tr.Are You Sure?')')" class="pinkbutton"><i class="fa fa-trash"></i></a>    
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @endif
+
                     <br>
                     <h6 style="text-align:center;">
                         @can('edit_catalogs')
@@ -61,6 +84,7 @@
                     </h6>
 
                     <br>
+                    
                     
                 </div>
             </div>

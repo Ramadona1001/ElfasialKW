@@ -6,11 +6,16 @@
     
 @section('stylesheet')
     <link rel="stylesheet" href="{{ asset('backend/imageUpload/image-uploader.min.css') }}">
+    <style>
+        .bootstrap-select{
+            width:100% !important;
+        }
+    </style>
 @endsection
 
 @section('content')
 
-
+@php($langName = \Lang::getLocale().'_name')
 <div class="row">
     <div class="col-xl-12 order-lg-2 order-xl-1">
         <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
@@ -31,77 +36,29 @@
                     @csrf
 
                     <div class="row">
-                        
-
-                        <div class="col-lg-12">
-                            <h5>@lang('tr.Items')</h5><hr>
-                            <form action="{{ route('store_catalogs') }}" method="post" enctype="multipart/form-data">
-                                @csrf
-            
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="en_name">@lang('tr.English Name')</label>
-                                                    <input type="text" name="en_name" id="name" class="form-control" placeholder="@lang('tr.Enter English Name')" required>
-                                                </div>
-                                            </div>
-                    
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="ar_name">@lang('tr.Arabic Name')</label>
-                                                    <input type="text" name="ar_name" id="ar_name" class="form-control" placeholder="@lang('tr.Enter Arabic Name')" required>
-                                                </div>
-                                            </div>
+                        @foreach ($itemInventory as $item)
+                                <div class="col-lg-2">
+                                    <div class="card" style="border: 2px dashed #f05f7861; padding: 5px;">
+                                        <img class="card-img-top" src="{{ asset('uploads/itemsinventories/'.$item->inventory_image) }}" style="width:100%;height:200px;">
+                                        <div class="card-body">
+                                          <h5 class="card-title">{{ $item->$langName }}</h5>
+                                          <p class="card-text">
+                                              @lang('tr.Price'): {{ $item->price }} <hr>
+                                              <input type="checkbox" name="iteminventory[]" value="{{$item->id}}" id="" style="height: 30px; width: 30px; display: block; margin-left: auto; margin-right: auto;">
+                                          </p>
+                                          
+                                            
+        
                                         </div>
-                    
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="en_desc">@lang('tr.English Descriptions')</label>
-                                                    <textarea name="en_desc" id="en_desc" cols="30" rows="10" class="form-control" placeholder="@lang('tr.Enter English Descriptions')" required></textarea>
-                                                </div>
-                                            </div>
-                    
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="ar_desc">@lang('tr.Arabic Descriptions')</label>
-                                                    <textarea name="ar_desc" id="ar_desc" cols="30" rows="10" class="form-control" placeholder="@lang('tr.Enter Arabic Descriptions')" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                    
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label for="package_imgs">@lang('tr.Image')</label>
-                                                    <input type="file" name="package_imgs" id="package_imgs" class="form-control" required>
-                                                </div>
-                                            </div>
-                                        </div>
-            
-                                       
-                    
-                                       
-                                    </div>
-                                    
+                                      </div>
                                 </div>
-            
-                                <hr>
-                                <div class="form-group">
-                                    <button type="submit" id="submitBtn" class="btn btn-success">
-                                        <i class="fa fa-save"></i>&nbsp;@lang('tr.Save')
-                                    </button>
-                                </div>
-
-                            </form>
-                        </div>
-
-                        
+                                @endforeach
                     </div>
+                    <br>
 
-                   
+                    <input type="submit" value="@lang('tr.Save')" class="btn btn-success">
+                </form>
+                <br>
                 </div>
             </div>
         </div>
@@ -109,7 +66,7 @@
 </div>
 
     
-</form>
+
 @endsection
 
 @section('javascript')

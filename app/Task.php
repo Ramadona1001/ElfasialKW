@@ -19,7 +19,11 @@ class Task extends Model
     }
     
     public function order(){
-        return $this->belongsTo('App\Order','order_id');
+        return $this->belongsTo('App\Order','order_data_id');
+    }
+
+    public function mainorder(){
+        return $this->belongsTo('App\MainOrder','order_id');
     }
 
     public function departmentName($id){

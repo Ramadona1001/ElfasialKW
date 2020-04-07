@@ -19,4 +19,8 @@ class Buffet extends Model
         $lang = \Lang::getLocale();
         return Inventory::select($lang.'_name as name','id',$lang.'_desc as desc')->where('id',$id)->get()->first();
     }
+
+    public function iteminventory(){
+        return $this->belongsTo('App\ItemInventory','iteminventory_id');
+    }
 }

@@ -26,8 +26,8 @@
                 <div class="col-xl-12 order-lg-2 order-xl-1">
                   
                     @include('backend.components.errors')
-                   
-                <form action="{{ route('store_packages') }}" method="post" enctype="multipart/form-data">
+                    @php($packagesParams = [$package->id,$package->category_id])
+                <form action="{{ route('update_packages',$package->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row">
@@ -83,6 +83,14 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="package_image">@lang('tr.Image')</label>
+                                        <input type="file" name="package_image" class="form-control" id="package_image">
+                                    </div>
+                                </div>
+                            </div>
         
                             
                         </div>

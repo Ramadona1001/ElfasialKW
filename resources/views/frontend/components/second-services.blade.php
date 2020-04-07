@@ -20,8 +20,8 @@
             <div class="entry">
               
               <div class="thumbnail-attachment">
-                <a href="{{ route('frontend_single_services',$catalog->id) }}" class="overlink"></a>
-                <img src="{{ asset('catalogs/'.$catalog->catalog_img)}}" alt="">
+                <a href="{{ route('frontend_services_fromchoice',$catalog->id) }}" class="overlink"></a>
+                <img src="{{ asset('uploads/catalogs/'.$catalog->catalog_img)}}" alt="">
               </div>
         
               <div class="entry-body">
@@ -32,9 +32,9 @@
                     
                 </div>
         
-              <h4 class="entry-title"><a href="{{ route('frontend_single_services',$catalog->id) }}"> {{ $catalog->name }} </a></h4>
+              <h4 class="entry-title"><a href="{{ route('frontend_services_fromchoice',$catalog->id) }}"> {{ $catalog->name }} </a></h4>
         
-                <a href="{{ route('frontend_single_services',$catalog->id) }}" class="btn btn-small">@lang('tr.Details')</a>
+                <a href="{{ route('frontend_services_fromchoice',$catalog->id) }}" class="btn btn-small">@lang('tr.Details')</a>
         
               </div>
         

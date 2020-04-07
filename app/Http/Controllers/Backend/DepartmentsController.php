@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Department;
 use App\UserDeartment;
+use App\User;
 use Lang;
 use Auth;
 
@@ -110,6 +111,39 @@ class DepartmentsController extends Controller
         $usersDepartment = UserDeartment::findOrfail($id);
         $usersDepartment->delete();
         return back()->with('success',__(''));
+    }
+
+    public function createusers($id){
+        if(!Auth::user()->hasPermissionTo('create_departments'))
+            abort(403);
+            
+        $department = Department::findOrfail($id);
+        $users = User::all();
+        $usersDepartment = UserDeartment::where('department_id',$id)->get();
+        $usersArray = [];
+        foreach ($usersDepartment as $user) {
+            array_push($usersArray,$user->user_id);
+        }
+        return view('backend.pages.departments.assignuser',compact('department','users','usersArray'));
+    }
+
+    public function storesers($id,Request $request)
+    {
+        if(!Auth::user()->hasPermissionTo('create_departments'))
+            abort(403);
+            
+        $department = Department::findOrfail($id);
+        if (isset($request->users)) {
+            $usersDepartment = UserDeartment::where('department_id',$id)->delete();
+            foreach ($request->users as $user) {
+                $usdep = new UserDeartment();
+                $usdep->user_id = $user;
+                $usdep->department_id = $id;
+                $usdep->save();
+            }
+        }
+        return back()->with('success',__(''));
+
     }
 
 }

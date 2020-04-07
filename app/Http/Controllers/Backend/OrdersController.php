@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Order;
+use App\MainOrder;
 use App\Customer;
 use App\Catalog;
 use App\CatalogItem;
@@ -52,8 +53,19 @@ class OrdersController extends Controller
     {
         if(!Auth::user()->hasPermissionTo('show_menu_orders'))
             abort(403);
-        $orders = Order::all();
-        return view('backend.pages.orders.index',compact('orders'));
+        $orders = MainOrder::all();
+        $ordersData = Order::all();
+        $contracts = Contract::all();
+        return view('backend.pages.orders.index',compact('orders','ordersData','contracts'));
+    }
+
+    public function printOrder(Request $request)
+    {
+        $orders = MainOrder::findOrfail($request->order_id);
+        $contracts = Contract::findOrfail($request->contract);
+        $terms = ContractItem::where('contract_id',$contracts->id)->get();
+        $ordersData = Order::where('mainorder_id',$orders->id)->get();
+        return view('backend.pages.orders.print',compact('orders','ordersData','contracts','terms'));
     }
 
   
@@ -489,24 +501,13 @@ class OrdersController extends Controller
         if(!Auth::user()->hasPermissionTo('create_tasks'))
             abort(403);
         $lang = \Lang::getLocale();
-        $orders = Order::findOrfail($id);
+        $orders = MainOrder::findOrfail($id);
         $customers = Customer::all();
         $users = User::all();
         $departments = Department::select($lang.'_name as name','id')->get();
-        $orders_data = Order::findOrfail($id)->order_data;
-        $decode_data = json_decode($orders_data,true);
-        $all_orders = [];
+        $orders_data = Order::where('mainorder_id',$orders->id)->get();
         
-        $count = count($decode_data) / 4;
-        for ($i=0; $i < $count; $i++) { 
-            $id = 'id_'.$i;
-            $title = 'title_'.$i;
-            $quantity = 'quantity_'.$i;
-            $total = 'total_'.$i;
-
-            $all_orders[$decode_data[$id]] = $decode_data[$title].' - Quantity: '.$decode_data[$quantity];
-        }
-        return view('backend.pages.orders.tasks',compact('orders','customers','users','departments','all_orders'));
+        return view('backend.pages.orders.tasks',compact('orders','customers','users','departments','orders_data'));
     }
 
     public function storeTasksOrders(Request $request)
@@ -519,12 +520,14 @@ class OrdersController extends Controller
        
         $order_id = $request->order_id;
         $order_task = $request->order_task;
-        $customer_id = $request->customer_id;
+        $customer_id = $request->customer_phone;
         $department_id = $request->department_id;
         $user_id = $request->user_id;
         $department_task_id = $request->department_task_id;
         $task_date = $request->task_date;
         $task_status = $request->status;
+        $order_data = $request->order_data;
+        $orders_data = Order::findOrfail($request->order_data);
 
         if($request->notes !=null)
             $notes = $request->notes;
@@ -534,8 +537,9 @@ class OrdersController extends Controller
         $task = new Task();
 
         $task->order_id = $order_id;
-        $task->order_task = $order_task;
-        $task->customer_id = $customer_id;
+        $task->order_data_id = $order_data;
+        $task->order_task = $orders_data->name;
+        $task->customer_phone = $customer_id;
         $task->department_id = $department_id;
         $task->user_id = $user_id;
         $task->department_task_id = $department_task_id;

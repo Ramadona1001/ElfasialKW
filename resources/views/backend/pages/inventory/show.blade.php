@@ -25,54 +25,37 @@
                 <div class="col-xl-12 order-lg-2 order-xl-1">
                    <div class="row">
                         <div class="col-lg-12">
-                            <img src="{{ asset('inventories/'.$item->inventory_image) }}" class="img-responsive img-thumbnail" style="width:200px;display:block;margin-left:auto;margin-right:auto;" alt="">
+                            <img src="{{ asset('uploads/inventories/'.$item->inventory_image) }}" class="img-responsive img-thumbnail" style="width:200px;display:block;margin-left:auto;margin-right:auto;" alt="">
                         </div>
                    </div>
                     <hr>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <p>@lang('tr.Name')</p>
-                            <p style="background: #eee; padding: 10px; color: black;">{{ $item->name }}</p>
+                        <div class="col-lg-6">
+                            <p>@lang('tr.English Name')</p>
+                            <p style="background: #eee; padding: 10px; color: black;">{{ $item->en_name }}</p>
                         </div>
-
+                        <div class="col-lg-6">
+                            <p>@lang('tr.Arabic Name')</p>
+                            <p style="background: #eee; padding: 10px; color: black;">{{ $item->ar_name }}</p>
+                        </div>
                         
                         
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <p>@lang('tr.Quantity')</p>
                             <p style="background: #eee; padding: 10px; color: black;">{{ $item->quantity }}</p>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <p>@lang('tr.Price')</p>
                             <p style="background: #eee; padding: 10px; color: black;">{{ $item->price }}</p>
                         </div>
-                        
-                        <div class="col-lg-4">
-                            <p>@lang('tr.Orignal Price')</p>
-                            <p style="background: #eee; padding: 10px; color: black;">{{ $item->orignal_price }}</p>
-                        </div>
-
+                       
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <p>@lang('tr.Added Value')</p>
-                            <p style="background: #eee; padding: 10px; color: black;">{{ $item->add_value }}</p>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <p>@lang('tr.Total')</p>
-                            <p style="background: #eee; padding: 10px; color: black;">{{ $item->total_price }}</p>
-                        </div>
-                        
-                        <div class="col-lg-4">
-                            <p>@lang('tr.Orignal Total')</p>
-                            <p style="background: #eee; padding: 10px; color: black;">{{ $item->total_orignal_price }}</p>
-                        </div>
-                    </div>
+                
 
                     <div class="row">
                         <div class="col-lg-12">

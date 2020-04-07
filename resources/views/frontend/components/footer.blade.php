@@ -81,7 +81,7 @@
 
                     <div class="thumbnail-attachment">
                       <a href="/services#tab-{{ $cat->id }}" class="overlink"></a>
-                      <a href="/services#tab-{{ $cat->id }}"><img src="{{ asset('categories/'.$cat->cat_image) }}" class="footer_image" alt=""></a>
+                      <a href="/services#tab-{{ $cat->id }}"><img src="{{ asset('uploads/categories/'.$cat->cat_image) }}" class="footer_image" alt=""></a>
                     </div>
 
                     <div class="entry-body">

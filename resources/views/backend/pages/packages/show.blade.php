@@ -31,9 +31,10 @@
                             <i class="flaticon2-delivery-package"></i> {{$package->name}}
                             &nbsp;&nbsp;&nbsp;<a href="{{ route('create_items_packages',$package->id) }}" class="pinkbutton">@lang('tr.Add New Item')</a>
                             @php($packagesParams = [$package->id,$package->category_id])
-                            &nbsp;&nbsp;&nbsp;<a href="{{ route('edit_packages',implode(',',$packagesParams)) }}" class="bluebutton">@lang('tr.Edit')</a>
+                            &nbsp;&nbsp;&nbsp;<a href="{{ route('edit_packages',$package->id) }}" class="bluebutton">@lang('tr.Edit')</a>
                             &nbsp;&nbsp;&nbsp;<a href="{{ route('destroy_packages',implode(',',$packagesParams)) }}" onclick="return confirm('@lang('tr.Are you Sure?')')" class="redbutton">@lang('tr.Delete')</a>
                             &nbsp;&nbsp;&nbsp;@lang('tr.No Members'): ({{ $package->no_members }})
+                            &nbsp;&nbsp;&nbsp;@lang('tr.Price'): ({{ $package->price }})
                             
                         </div>
                     </div>
@@ -54,9 +55,9 @@
                                     @if ($item->package_id == $package->id)
                                         <tr>
                                             <td class="tdesign">{{ $index + 1 }}</td>
-                                            <td class="tdesign">{{ $item->$langName }}</td>
+                                            <td class="tdesign">{{ $item->iteminventory->$langName }}</td>
                                             <td class="tdesign">
-                                                <img src="{{ asset('packages/items/'.$item->package_imgs) }}" style="width:100px;height:100px;" alt="" srcset="">
+                                                <img src="{{ asset('uploads/itemsinventories/'.$item->iteminventory->inventory_image) }}" alt="" srcset="" style="width:100px;height:50px;">    
                                             </td>
                                             
                                             <td class="tdesign">

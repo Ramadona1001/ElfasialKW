@@ -13,6 +13,7 @@ use App\Department;
 use App\CatalogItem;
 use App\FromChoice;
 use App\Inventory;
+use App\MainOrder;
 use App\Order;
 use App\Task;
 use App\ContactUs;
@@ -200,7 +201,7 @@ class FrontendController extends Controller
     
     public function index(){
 
-        $orders = Order::where('orders.status','new')->get();
+        $orders = MainOrder::where('main_orders.status','new')->get();
         
         
         // foreach ($orders as $order) {
@@ -244,55 +245,13 @@ class FrontendController extends Controller
         return view('frontend.pages.aboutus',compact('categories'));
     }
     
-    public function services(){
-        $lang = \Lang::getLocale();
-        $packagesCategory = Package::select($lang.'_name as name',$lang.'_desc as desc','category_id','id','price')->groupBy('category_id')->get();
-        $catalogs = Catalog::select($lang.'_name as name','id','catalog_img',$lang.'_desc as desc','categories_id')->get();
-        
-        $category = Category::select($lang.'_name as name','id','cat_image',$lang.'_desc as desc','id')->get();
-        
-        $buffetsCategory = Buffet::select('no_members','id','buffets_image',$lang.'_desc as desc','categories_id')->groupBy('categories_id')->get();
-       
-        return view('frontend.pages.services',compact('category','catalogs','buffetsCategory','packagesCategory'));
-    }
+    
 
-    public function fromchoice($id)
-    {
-        $lang = \Lang::getLocale();
-        $catalogs = Catalog::select($lang.'_name as name','id','catalog_img',$lang.'_desc as desc','categories_id')->get();
-        
-        $category = Category::select($lang.'_name as name','id','cat_image',$lang.'_desc as desc','id')->get();
-        
-        $buffetsCategory = Buffet::select('no_members','id','buffets_image',$lang.'_desc as desc','categories_id')->groupBy('categories_id')->get();
+    
 
-        return view('frontend.pages.fromchoice',compact('category','catalogs','buffetsCategory'));
-    }
+    
 
-    public function packages()
-    {
-        
-        $lang = \Lang::getLocale();
-        $category = Category::select($lang.'_name as name','id','cat_image',$lang.'_desc as desc','id')->get();
-        $packagesCategory = Package::select($lang.'_name as name',$lang.'_desc as desc','category_id','id','price')->get();
-        
-
-        return view('frontend.pages.package',compact('category','packagesCategory'));
-    }
-
-    public function packagesDetails($id)
-    {
-        $lang = \Lang::getLocale();
-        $package = Package::select($lang.'_name as name',$lang.'_desc as desc','category_id','id','price')->where('id',$id)->get()->first();
-        $packagesItems = PackageItem::where('package_id',$id)->get();
-        return view('frontend.pages.package_single',compact('package','packagesItems'));
-    }
-
-    public function buffet_services($id){
-        $lang = \Lang::getLocale();
-        $category_id = $id;
-        $buffets = Buffet::select($lang.'_name as name','no_members','id','buffets_image',$lang.'_desc as desc','categories_id','price')->where('categories_id',$id)->get();
-        return view('frontend.pages.buffet_services',compact('buffets','category_id'));
-    }
+    
 
     public function buffet_services_choice($id){
         $lang = \Lang::getLocale();

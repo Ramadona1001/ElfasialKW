@@ -8,8 +8,10 @@ use App\Package;
 use App\PackageItem;
 use App\Category;
 use App\Inventory;
+use App\ItemInventory;
 use Auth;
 use Image;
+use File;
 
 class PackageController extends Controller
 {
@@ -63,6 +65,14 @@ class PackageController extends Controller
             'ar_desc' => 'required|min:2',
         ]);
 
+        $image_path = public_path().'/uploads/packages/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
+
+        if ($request->hasFile('package_image')){
+            $imageName = time().'.'.request()->package_image->getClientOriginalExtension();
+            $request->package_image->move($image_path, $imageName);
+        }
+
         foreach ($request->category_id as $cat) {
             
             $package = new Package();
@@ -72,8 +82,9 @@ class PackageController extends Controller
             $package->ar_desc = strip_tags($request->ar_desc);
             $package->price = strip_tags($request->price);
             $package->no_members = strip_tags($request->no_members);
-
+            $package->package_image = $imageName;
             $package->category_id = $cat;
+            
             $package->save();
         }
 
@@ -96,10 +107,41 @@ class PackageController extends Controller
 
     public function edit($id)
     {
-        if(!Auth::user()->hasPermissionTo('show_packages'))
+        if(!Auth::user()->hasPermissionTo('edit_packages'))
             abort(403);
-        $package = Package::where('id',explode(',',$id)[0])->where('category_id',explode(',',$id)[1])->get()->first();
+        $package = Package::findOrfail($id);
         return view('backend.pages.packages.edit',compact('package'));
+    }
+
+    public function update(Request $request,$id)
+    {
+        if(!Auth::user()->hasPermissionTo('edit_packages'))
+            abort(403);
+
+        $package = Package::findOrfail($id);
+        $image_path = public_path().'/uploads/packages/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
+
+        if ($request->hasFile('package_image')){
+            $path = $image_path . $package->package_image;
+            if(file_exists($path)) {
+                File::delete($path);
+            }
+
+            $imageName = time().'.'.request()->package_image->getClientOriginalExtension();
+            $request->package_image->move($image_path, $imageName);
+            $package->package_image = $imageName;
+        }
+
+        $package->en_name = strip_tags($request->en_name);
+        $package->ar_name = strip_tags($request->ar_name);
+        $package->en_desc = strip_tags($request->en_desc);
+        $package->ar_desc = strip_tags($request->ar_desc);
+        $package->price = strip_tags($request->price);
+        $package->no_members = strip_tags($request->no_members);
+        $package->save();
+        return redirect()->route('packages')->with('success','');
+        
     }
 
     public function updateItems(Request $request,$id)
@@ -137,8 +179,8 @@ class PackageController extends Controller
         abort(403);
         $lang = \Lang::getLocale();
         $packages = Package::select($lang.'_name as name',$lang.'_desc as desc','category_id','id','price')->where('id',$id)->get()->first();
-        // $inventory = Inventory::select($lang.'_name as name','id','price','quantity','add_value','total_price','user_id',$lang.'_desc as desc','inventory_image')->get();
-        return view('backend.pages.packages.createItems',compact('packages'));
+        $itemInventory = ItemInventory::all();
+        return view('backend.pages.packages.createItems',compact('packages','itemInventory'));
 
     }
 
@@ -148,39 +190,18 @@ class PackageController extends Controller
         abort(403);
 
         $lang = \Lang::getLocale();
+        $itemInventory = ItemInventory::all();
         $packages = Package::select($lang.'_name as name',$lang.'_desc as desc','category_id','id','price')->where('id',$id)->get()->first();
-        
-        
-        $packagesItems = new PackageItem();
-        $packagesItems->ar_name = $request->ar_name;
-        $packagesItems->en_name = $request->en_name;
-        $packagesItems->ar_desc = $request->ar_desc;
-        $packagesItems->en_desc = $request->en_desc;
-        $packagesItems->package_id = $packages->id;
 
-        if ($request->hasFile('package_imgs')) {
-
-            $image = $request->file('package_imgs');
-
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-
-            $destinationPath = public_path('/packages/items');
-
-            $resize_image = Image::make($image->getRealPath());
-
-            $resize_image->resize(150, 150, function($constraint){
-            $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $image_name);
-
-            $destinationPath = public_path('/packages/items');
-
-            $image->move($destinationPath, $image_name);
-            $packagesItems->package_imgs = $image_name;
-
+        if (isset($request->iteminventory)) {
+            for ($i=0; $i < count($request->iteminventory); $i++) { 
+                $packagesItems = new PackageItem();
+                $packagesItems->iteminventory_id = $request->iteminventory[$i];
+                $packagesItems->package_id = $packages->id;
+                $packagesItems->save();
+            }
         }
         
-        $packagesItems->save();
-
         return redirect()->route('packages')->with('success','');
     }
 

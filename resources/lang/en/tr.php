@@ -351,4 +351,13 @@ return [
     'Create New Packages' => 'Create New Packages',
     'Update Packages' => 'Update Packages',
     'Select Contract' => 'Select Contract',
+
+    'Items Inventory' => 'Items Inventory',
+    'Our Services' => 'Our Services',
+    'Add To Cart' => 'Add To Cart',
+    'Check Out' => 'Check Out',
+    'Empty Cart' => 'Empty Cart',
+    'Quantity In Your Cart' => 'Quantity In Your Cart',
+    'Day / Time' => 'Day / Time',
+    'Assign User' => 'Assign User',
 ];

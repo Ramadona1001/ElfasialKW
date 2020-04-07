@@ -12,6 +12,7 @@ use App\Department;
 use App\CatalogItem;
 use App\Inventory;
 use App\Order;
+use App\MainOrder;
 use App\Task;
 use App\ContactUs;
 use DateTime;
@@ -51,7 +52,7 @@ class HomeController extends Controller
     {
         //Check Order is Finish
         
-        $orders = Order::where('orders.status','new')->get();
+        $orders = MainOrder::where('main_orders.status','new')->get();
         
         // foreach ($orders as $order) {
         

@@ -19,6 +19,7 @@
             data-frames='[{"delay":450,"speed":2000,"frame":"0","from":"y:50px;opacity:0;","to":"o:1;","ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"frame":"999","to":"y:[175%];","mask":"x:inherit;y:inherit;s:inherit;e:inherit;","ease":"Power2.easeInOut"}]'
             data-responsive_offset="on"
             data-elementdelay="0.05"  >@lang('tr.Decore Wedding Halls')
+            <br><a href="{{ route('frontend_services') }}" style="font-size:20px;text-align:center;background:#f05f79;padding:10px;color:white;font-family:tahoma;">@lang('tr.Reserve Your Occasions')</a>
           </div>
 
          
@@ -38,6 +39,7 @@
             data-frames='[{"delay":450,"speed":2000,"frame":"0","from":"y:50px;opacity:0;","to":"o:1;","ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"frame":"999","to":"y:[175%];","mask":"x:inherit;y:inherit;s:inherit;e:inherit;","ease":"Power2.easeInOut"}]'
             data-responsive_offset="on"
             data-elementdelay="0.05" >@lang('tr.Birthdays')
+            <br><a href="{{ route('frontend_services') }}" style="font-size:20px;text-align:center;background:#f05f79;padding:10px;color:white;font-family:tahoma;">@lang('tr.Reserve Your Occasions')</a>
           </div>
 
           <!-- - - - - - - - - - - - - - End of Layer 1 - - - - - - - - - - - - - - - - -->
@@ -59,6 +61,7 @@
             data-frames='[{"delay":450,"speed":2000,"frame":"0","from":"y:50px;opacity:0;","to":"o:1;","ease":"Power3.easeOut"},{"delay":"wait","speed":1000,"frame":"999","to":"y:[175%];","mask":"x:inherit;y:inherit;s:inherit;e:inherit;","ease":"Power2.easeInOut"}]'
             data-responsive_offset="on"
             data-elementdelay="0.05">@lang('tr.Special Occasions')
+            <br><a href="{{ route('frontend_services') }}" style="font-size:20px;text-align:center;background:#f05f79;padding:10px;color:white;font-family:tahoma;">@lang('tr.Reserve Your Occasions')</a>
           </div>
 
           <!-- - - - - - - - - - - - - - End of Layer 1 - - - - - - - - - - - - - - - - -->

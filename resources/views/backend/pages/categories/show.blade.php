@@ -24,7 +24,7 @@
             <div class="kt-portlet__body kt-portlet__body--fit">
                 <div class="col-xl-12 order-lg-2 order-xl-1">
                     <hr>
-                    <img src="{{ asset('categories/'.$category->cat_image) }}" class="img-responsive img-thumbnail" style="width:200px;display:block;margin-left:auto;margin-right:auto;"><hr>
+                    <img src="{{ asset('uploads/categories/'.$category->cat_image) }}" class="img-responsive img-thumbnail" style="width:200px;display:block;margin-left:auto;margin-right:auto;"><hr>
                     
                     <div class="row">
                         <div class="col-lg-12">

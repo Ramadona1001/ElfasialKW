@@ -28,9 +28,7 @@
                     </div>
 
                     <div class="info-item">
-                           <span class="licon-map-marker-check"></span>
-                        <span class="info-title"> 5 Rah street , Nasr City</span>
-                        <span>@lang('tr.Address')</span>
+                        
                     </div>
 
                     <div class="info-item">

@@ -68,10 +68,10 @@
  <div class="head-btn">
    @php($cartCount = \App\Order::getCartCount())
   <div class="dropdown-area">
-    <a href="{{ route('frontend_view_cart') }}" class="btn btn-primary">
+    <a href="{{ route('cart_index') }}" class="btn btn-primary">
       <i class="fa fa-cart-arrow-down"></i>
       
-    <span class="badge badge-light">{{ Session::has('cart') ? Session::get('cart')->totalQty : '' }}</span>
+    <span class="badge badge-light">{{ Cart::count() }}</span>
     </a>
     
 

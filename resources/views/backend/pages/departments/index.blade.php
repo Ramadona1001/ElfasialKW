@@ -43,17 +43,21 @@
                                 <td class="tdesign">{{ $index+1 }}</td>
                                 <td class="tdesign">{{ $department->name }}</td>
                                 <td class="ttdesign">
-                                    
+
+                                    @can('show_departments')
+                                    <a href="{{ route('create_users_departments',$department->id) }}" class="pinkbutton">@lang('tr.Assign User')</a>&nbsp;
+                                    @endcan
+
                                     @can('show_departments')
                                     <a href="{{ route('show_departments',$department->id) }}" class="pinkbutton">@lang('tr.View')</a>&nbsp;
                                     @endcan
 
                                     @can('edit_departments')
-                                    <a href="{{ route('edit_departments',$department->id) }}" class="bluebutton">@lang('tr.Edit')</a>&nbsp;
+                                    <a href="{{ route('edit_departments',$department->id) }}" class="pinkbutton">@lang('tr.Edit')</a>&nbsp;
                                     @endcan
 
                                     @can('delete_departments')
-                                    <a onclick="return confirm('Are You Sure ?')" class="redbutton" href="{{ route('delete_departments',$department->id) }}">@lang('tr.Delete')</a>
+                                    <a onclick="return confirm('Are You Sure ?')" class="pinkbutton" href="{{ route('delete_departments',$department->id) }}">@lang('tr.Delete')</a>
                                     @endcan
                                 </td>
                             </tr>

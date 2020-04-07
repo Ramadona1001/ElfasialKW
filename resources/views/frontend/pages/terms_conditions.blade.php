@@ -35,14 +35,11 @@
         </div>
 
     </div>
-      <div class="content-element">
-        @if(\Lang::locale() == 'ar')
-        {!! $system_ar_terms !!}
-        @else
-        {!! $system_en_terms !!}
-        @endif
-
-     </div>
+    @if(\Lang::locale() == 'ar')
+    {!! $system_ar_terms !!}
+    @else
+    {!! $system_en_terms !!}
+    @endif
     </div>
     </div>
 

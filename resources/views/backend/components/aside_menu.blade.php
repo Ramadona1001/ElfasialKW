@@ -36,7 +36,8 @@
 				<h4 class="kt-menu__section-text">@lang('tr.Items')</h4>
 				<i class="kt-menu__section-icon flaticon-more-v2"></i>
 			</li>
-
+			
+			<li class="kt-menu__item   @yield('iteminventorysactive')" aria-haspopup="true"><a href="{{ route('iteminventory') }}" class="kt-menu__link "><i class="kt-menu__link-bullet fa fa-database" style="color:#f5f6ff;"><span></span></i>&nbsp;&nbsp;&nbsp;<span class="kt-menu__link-text">@lang('tr.Items Inventory')</span></a></li>
 			<li class="kt-menu__item   @yield('inventorysactive')" aria-haspopup="true"><a href="{{ route('inventory') }}" class="kt-menu__link "><i class="kt-menu__link-bullet fa fa-database" style="color:#f5f6ff;"><span></span></i>&nbsp;&nbsp;&nbsp;<span class="kt-menu__link-text">@lang('tr.Inventory')</span></a></li>
 			@endcan
 

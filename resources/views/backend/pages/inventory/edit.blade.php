@@ -52,33 +52,23 @@
                     </div>                    
 
                     <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="orignal_price">@lang('tr.Original Price')</label>
-                                <input type="number" name="orignal_price" value="{{ $item->orignal_price }}" id="orignal_price" min="1" step="1" onkeypress='validate(event)' minlength="5" maxlength="6" class="form-control price" placeholder="@lang('tr.Price')" required>
-                            </div>
-                        </div>
 
-                        <div class="col-lg-3">
+
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="quantity">@lang('tr.Quantity')</label>
                                 <input type="number" name="quantity" value="{{ $item->quantity }}" id="quantity" min="1" step="1" onkeypress='validate(event)' minlength="5" maxlength="6" class="form-control price" placeholder="@lang('tr.Quantity')" required>
                             </div>
                         </div>
 
-                        <div class="col-lg-3">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="price">@lang('tr.Price')</label>
                                 <input type="number" name="price" value="{{ $item->price }}" id="price" min="1" step="1" onkeypress='validate(event)' minlength="5" maxlength="6" class="form-control price" placeholder="@lang('tr.Price')" required>
                             </div>
                         </div>
 
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="add_value">@lang('tr.Added Value')</label>
-                                <input type="number" name="add_value" value="{{ $item->add_value }}" id="add_value" min="0" step="1" onkeypress='validate(event)' minlength="5" maxlength="6" class="form-control price" placeholder="@lang('tr.Added Value')" required>
-                            </div>
-                        </div>
+                        
 
                     </div>
 

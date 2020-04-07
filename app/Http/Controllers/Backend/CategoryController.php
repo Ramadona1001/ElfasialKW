@@ -60,28 +60,15 @@ class CategoryController extends Controller
         $categories->en_desc = $request->en_desc;
         $categories->ar_desc = $request->ar_desc;
 
-        
+        $image_path = public_path().'/uploads/categories/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
 
-        if ($request->hasFile('cat_image')) {
-
-            $image = $request->file('cat_image');
-
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-
-            $destinationPath = public_path('/categories');
-
-            $resize_image = Image::make($image->getRealPath());
-
-            $resize_image->resize(150, 150, function($constraint){
-            $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $image_name);
-
-            $destinationPath = public_path('/categories');
-
-            $image->move($destinationPath, $image_name);
-            $categories->cat_image = $image_name;
-
+        if ($request->hasFile('cat_image')){
+            $imageName = time().'.'.request()->cat_image->getClientOriginalExtension();
+            $request->cat_image->move($image_path, $imageName);
+            $categories->cat_image = $imageName;
         }
+
 
         $categories->save();
 
@@ -128,34 +115,21 @@ class CategoryController extends Controller
         $category->en_desc = $request->en_desc;
         $category->ar_desc = $request->ar_desc;
 
-       
+        $image_path = public_path().'/uploads/categories/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
 
-        if ($request->hasFile('cat_image')) {
-            $path = public_path() . '/categories/' . $category->cat_image;
+        if ($request->hasFile('cat_image')){
+            $path = $image_path . $category->cat_image;
             if(file_exists($path)) {
                 File::delete($path);
             }
 
-            $image = $request->file('cat_image');
-
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-
-            $destinationPath = public_path('/categories');
-
-            $resize_image = Image::make($image->getRealPath());
-
-            $resize_image->resize(150, 150, function($constraint){
-            $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $image_name);
-
-            $destinationPath = public_path('/categories');
-
-            $image->move($destinationPath, $image_name);
-            $categories->cat_image = $image_name;
+            $imageName = time().'.'.request()->cat_image->getClientOriginalExtension();
+            $request->cat_image->move($image_path, $imageName);
+            $categories->cat_image = $imageName;
         }
 
         
-
         $category->save();
 
         
@@ -169,7 +143,9 @@ class CategoryController extends Controller
         if(!Auth::user()->hasPermissionTo('delete_category'))
             abort(403);
         $category = Category::findOrfail($id);
-        $path = public_path() . '/categories/' . $category->cat_image;
+        $image_path = public_path().'/uploads/categories/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
+        $path = $image_path . $category->cat_image;
         if(file_exists($path)) {
             File::delete($path);
         }

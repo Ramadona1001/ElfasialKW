@@ -161,10 +161,14 @@ class UsersController extends Controller
             abort(403);
         $user_id = $request->user_id;
         $user = User::findOrfail($user_id);
-        \DB::select('delete from model_has_permissions where model_id = '.$user_id);
-        foreach ($request->permissions as $permission) {
-            $user->givePermissionTo($permission);
+        // \DB::select('delete from model_has_permissions where model_id = '.$user_id);
+        $user->syncPermissions();
+        if (isset($request->permissions)) {
+            foreach ($request->permissions as $permission) {
+                $user->givePermissionTo($permission);
+            }
         }
+        
         return back()->with('success',__(''));
     }
 

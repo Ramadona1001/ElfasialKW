@@ -66,10 +66,17 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="price">@lang('tr.Price')</label>
                                         <input type="number" name="price" id="price" class="form-control" step="1" min="1" value="1">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="no_members">@lang('tr.No Members')</label>
+                                        <input type="number" name="no_members" id="no_members"  class="form-control" value="1" step="1" min="1">
                                     </div>
                                 </div>
                             </div>
@@ -77,8 +84,8 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label for="no_members">@lang('tr.No Members')</label>
-                                        <input type="number" name="no_members" id="no_members"  class="form-control" value="1" step="1" min="1">
+                                        <label for="package_image">@lang('tr.Image')</label>
+                                        <input type="file" name="package_image" class="form-control" required id="package_image">
                                     </div>
                                 </div>
                             </div>

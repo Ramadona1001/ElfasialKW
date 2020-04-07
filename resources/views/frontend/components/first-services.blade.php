@@ -26,7 +26,7 @@
 
           <div class="icons-item">
             
-            <div class="item-box bg_card"  data-bg="{{ asset('/categories/'.$category->cat_image)}}">
+            <div class="item-box bg_card"  data-bg="{{ asset('uploads/categories/'.$category->cat_image)}}">
               <a href="/services#tab-{{ $category->id }}" class="overlink"></a>
               <div class="box-wrap">
                 

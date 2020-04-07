@@ -47,6 +47,8 @@ Route::prefix('dashboard')->group(function(){
         Route::post('/departments/update/{id}','DepartmentsController@update')->name('update_departments');
         Route::get('/departments/show/{id}','DepartmentsController@show')->name('show_departments');
         Route::get('/departments/delete/{id}','DepartmentsController@destroy')->name('delete_departments');
+        Route::get('/departments/users/create/{id}','DepartmentsController@createusers')->name('create_users_departments');
+        Route::post('/departments/users/store/{id}','DepartmentsController@storesers')->name('store_users_departments');
         Route::get('/departments/users/delete/{id}','DepartmentsController@destroyusers')->name('delete_users_departments');
 
         //Departments Tasks Routes
@@ -81,12 +83,8 @@ Route::prefix('dashboard')->group(function(){
 
         //Catalogs Items Routes
         
-        Route::get('/items','CatalogItemsController@index')->name('items');
-        Route::get('/items/create','CatalogItemsController@create')->name('create_items');
-        Route::post('/items/create','CatalogItemsController@store')->name('store_items');
-        Route::get('/items/edit/{id}','CatalogItemsController@edit')->name('edit_items');
-        Route::post('/items/update/{id}','CatalogItemsController@update')->name('update_items');
-        Route::get('/items/show/{id}','CatalogItemsController@show')->name('show_items');
+        Route::get('/items/create/{id}','CatalogItemsController@create')->name('create_items');
+        Route::post('/items/create/{id}','CatalogItemsController@store')->name('store_items');
         Route::get('/items/delete/{id}','CatalogItemsController@destroy')->name('delete_items');
 
         //Buffets Items Routes
@@ -99,6 +97,7 @@ Route::prefix('dashboard')->group(function(){
         Route::get('/buffets/show/{id}','BuffetController@show')->name('show_buffets');
         Route::get('/buffets/delete/{id}','BuffetController@destroy')->name('delete_buffets');
         Route::get('/buffets/create/items/{id}','BuffetController@createItems')->name('create_items_buffets');
+        Route::post('/buffets/create/items/{id}','BuffetController@storeItems')->name('store_items_buffets');
         Route::get('/buffets/deleteItemBuffet/{id}','BuffetController@deleteItemBuffet')->name('delete_item_buffets');
         Route::get('/buffets/deleteImg/{id}','BuffetController@deleteImg')->name('delete_image');
 
@@ -149,6 +148,16 @@ Route::prefix('dashboard')->group(function(){
         Route::get('/inventory/withdraw/show','InventoryController@withdrawShow')->name('withdraw_inventory_show');
         Route::post('/inventory/withdraw','InventoryController@withdraw')->name('withdraw_inventory');
         Route::post('/inventory/updatequantity/{id}','InventoryController@updateQuantity')->name('updatequantity_inventory');
+
+        //Items Inventory Routes
+        
+        Route::get('/iteminventory','ItemInventoryController@index')->name('iteminventory');
+        Route::get('/iteminventory/create','ItemInventoryController@create')->name('create_iteminventory');
+        Route::post('/iteminventory/create','ItemInventoryController@store')->name('store_iteminventory');
+        Route::get('/iteminventory/edit/{id}','ItemInventoryController@edit')->name('edit_iteminventory');
+        Route::post('/iteminventory/update/{id}','ItemInventoryController@update')->name('update_iteminventory');
+        Route::get('/iteminventory/show/{id}','ItemInventoryController@show')->name('show_iteminventory');
+        Route::get('/iteminventory/delete/{id}','ItemInventoryController@destroy')->name('delete_iteminventory');
         
 
         //Orders Routes
@@ -172,6 +181,10 @@ Route::prefix('dashboard')->group(function(){
         Route::post('/orders/tasksorders','OrdersController@storeTasksOrders')->name('store_tasksorders_inventory');
         
         Route::get('/orders/contracts/{id}','OrdersController@contractsTerms')->name('contractsTerms');
+        
+        //Print Order
+        Route::post('/orders/print','OrdersController@printOrder')->name('printOrder');
+
         
         
         //profitstatistic

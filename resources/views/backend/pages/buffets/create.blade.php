@@ -5,12 +5,18 @@
 @section('buffetssactive','kt-menu__item  kt-menu__item--active')
     
 @section('stylesheet')
-    <link rel="stylesheet" href="{{ asset('backend/imageUpload/image-uploader.min.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="{{ asset('backend/imageUpload/image-uploader.min.css') }}">
+<style>
+    .bootstrap-select{
+        width:100% !important;
+    }
+</style>
 @endsection
 
 @section('content')
 
-
+@php($langName = \Lang::getLocale().'_name')
 <div class="row">
     <div class="col-xl-12 order-lg-2 order-xl-1">
         <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
@@ -34,74 +40,56 @@
                         <div class="col-lg-12">
 
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="en_name">@lang('tr.English Name')</label>
-                                        <input type="text" name="en_name" class="form-control" id="en_name">
-                                    </div>
-                                </div>
+                                @foreach ($itemInventory as $item)
+                                <div class="col-lg-2">
+                                    <div class="card" style="border: 2px dashed #f05f7861; padding: 5px;">
+                                        <img class="card-img-top" src="{{ asset('uploads/itemsinventories/'.$item->inventory_image) }}" style="width:100%;height:200px;">
+                                        <div class="card-body">
+                                          <h5 class="card-title">{{ $item->$langName }}</h5>
+                                          <p class="card-text">
+                                              @lang('tr.Price'): {{ $item->price }} <hr>
+                                              <input type="checkbox" name="iteminventory[]" value="{{$item->id}}" id="" style="height: 30px; width: 30px; display: block; margin-left: auto; margin-right: auto;">
+                                          </p>
+                                          
+                                            
         
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ar_name">@lang('tr.Arabic Name')</label>
-                                        <input type="text" name="ar_name" class="form-control" id="ar_name">
-                                    </div>
+                                        </div>
+                                      </div>
                                 </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="en_desc">@lang('tr.English Descriptions')</label>
-                                        <textarea id="en_desc" name="en_desc" class="form-control"></textarea>
-                                    </div>
-                                </div>
-        
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ar_desc">@lang('tr.Arabic Descriptions')</label>
-                                        <textarea id="ar_desc"  name="ar_desc" class="form-control"></textarea>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
 
+                            <hr>
+
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="no_members">@lang('tr.No Members')</label>
                                         <input type="number" min="1" value="1" step="1" name="no_members" id="no_members" class="form-control" required>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="price">@lang('tr.Price')</label>
                                         <input type="text" name="price" id="price" class="form-control" required>
                                     </div>
                                 </div>
+
+                               
                             </div>
 
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="external_image">@lang('tr.Image') - [@lang('tr.External')]</label>
-                                        {{-- <div class="input-images"></div> --}}
-                                        <input type="file" name="external_image" id="external_image" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
+                            
         
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="buffets_image">@lang('tr.Image')</label>
                                         <div class="input-images"></div>
-                                        {{-- <input type="file" name="buffets_image" id="buffets_image" class="form-control" required> --}}
+                                        <input type="file" name="buffets_image" id="buffets_image" class="form-control" required>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
         
                             <div class="row">
                                 <div class="col-lg-12">
@@ -142,12 +130,15 @@
 @section('javascript')
 
 <script src="{{ asset('backend/imageUpload/image-uploader.min.js') }}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
 
 
 <script>
 $(document).ready(function(){
+
+    $('.selectpicker').selectpicker();
+
 
     $('.input-images').imageUploader({
         imagesInputName: 'buffets_image',

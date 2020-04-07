@@ -34,23 +34,31 @@
             <div style="padding:10px;">
                 <div class="row">
                     @foreach ($categories as $cat)
-                    <div class="col-lg-4">
+
+                    <div class="col-lg-3">
                         <div class="card">
-                            <div class="card-body" style="color: #f05f78; text-align: center; border: 1px dashed; font-size: 20px; font-weight: bold;">
-                                @php($category = \App\Package::category($cat))
-                                {{ $category->name }}
-                                <hr>
+                            <img class="card-img-top" src="{{ URL::to('/buffet.jpg') }}">
+                            @php($category = \App\Package::category($cat))
+                            <div class="card-body">
+                              <h5 class="card-title">{{ $category->name }}</h5>
+                              
+                              <hr>
+                               
+
                                 @can('show_buffets')
-                                    <a href="{{ route('show_buffets',$cat) }}" class="bluebutton" style="font-size:12px;font-weight:normal;">@lang('tr.View')</a>
+                                <a href="{{ route('show_buffets',$cat) }}" class="pinkbutton">@lang('tr.View')</a>&nbsp;
                                 @endcan
+
                                 
+
                                 @can('delete_buffets')
-                                <a href="{{ route('delete_buffets',$cat) }}" class="bluebutton" onclick="return confirm('@lang('tr.Are you sure?')')" style="font-size:12px;font-weight:normal;">@lang('tr.Delete')</a>
+                                <a onclick="return confirm('Are You Sure ?')" class="pinkbutton" href="{{ route('delete_buffets',$cat) }}">@lang('tr.Delete')</a>
                                 @endcan
+
                             </div>
-                        </div>
-                        <br>
+                          </div>
                     </div>
+
                 @endforeach
                 </div>
             </div>

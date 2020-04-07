@@ -347,4 +347,14 @@ return [
     'Arabic Content' => 'المحتوى بالعربى',
     'English Content' => 'المحتوى بالانجليزى',
     'Select Contract' => 'أختر العقد',
+
+
+    'Items Inventory' => 'مخزن الاصناف',
+    'Our Services' => 'خدماتنا',
+    'Add To Cart' => 'إضف للعربة',
+    'Check Out' => 'دفع',
+    'Empty Cart' => 'تفريغ العربة',
+    'Quantity In Your Cart' => 'كمية فى العربة',
+    'Day / Time' => 'اليوم / الوقت',
+    'Assign User' => 'تسجيل موظف',
 ];

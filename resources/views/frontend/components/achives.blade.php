@@ -77,7 +77,7 @@
 
 
 
-    <div class="call-out with-bg-img" data-bg="{{ asset('frontend/images/home/subscribe2.jpg') }}">
+    <div class="call-out with-bg-img" data-bg="{{ asset('frontend/images/home/3.jpg') }}">
 
  
         <div class="container">

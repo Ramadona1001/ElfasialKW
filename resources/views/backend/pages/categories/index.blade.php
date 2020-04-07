@@ -43,7 +43,7 @@
                             <tr>
                                 <td class="tdesign">{{ $index+1 }}</td>
                                 <td class="tdesign">{{ $category->name }}</td>
-                                <td class="tdesign"><img src="{{ asset('categories/'.$category->cat_image) }}" class="img-responsive" style="width:100px;"></td>
+                                <td class="tdesign"><img src="{{ asset('uploads/categories/'.$category->cat_image) }}" class="img-responsive" style="width:100px;"></td>
                                 <td class="ttdesign">
                                     
                                     @can('show_category')

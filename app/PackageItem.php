@@ -14,4 +14,8 @@ class PackageItem extends Model
         $inventory = Inventory::select($lang.'_name as name','id','price','quantity','add_value','total_orignal_price','orignal_price','total_price','user_id','notes',$lang.'_desc','inventory_image')->where('id',$id)->get()->first();
         return $inventory;
     }
+
+    public function iteminventory(){
+        return $this->belongsTo('App\ItemInventory','iteminventory_id');
+    }
 }

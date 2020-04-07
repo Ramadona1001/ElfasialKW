@@ -25,7 +25,7 @@ class CatalogsController extends Controller
             abort(403);
 
         $lang = \Lang::getLocale();
-        $catalogs = Catalog::select($lang.'_name as name','id','catalog_img','price',$lang.'_desc as desc','categories_id')->get();
+        $catalogs = Catalog::select($lang.'_name as name','id','catalog_img',$lang.'_desc as desc','categories_id')->paginate(8);
         return view('backend.pages.catalogs.index',compact('catalogs'));
     }
 
@@ -51,7 +51,6 @@ class CatalogsController extends Controller
             'ar_name' => 'required|max:255|min:2',
             'en_desc' => 'required|min:2',
             'ar_desc' => 'required|min:2',
-            // 'catalog_img' => 'required',
         ]);
         
         $catalogs = new Catalog();
@@ -61,50 +60,18 @@ class CatalogsController extends Controller
         $catalogs->en_desc = $request->en_desc;
         $catalogs->ar_desc = $request->ar_desc;
         $catalogs->categories_id = $request->categories_id;
-        $catalogs->price = $request->price;
 
-        if ($request->hasFile('catalog_img')) {
-            $image = $request->file('catalog_img');
+        $image_path = public_path().'/uploads/catalogs/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
 
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-
-            $destinationPath = public_path('/catalogs');
-
-            $resize_image = Image::make($image->getRealPath());
-
-            $resize_image->resize(150, 150, function($constraint){
-            $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $image_name);
-
-            $destinationPath = public_path('/catalogs');
-
-            $image->move($destinationPath, $image_name);
-            $catalogs->catalog_img = $image_name;
-
-
+        if ($request->hasFile('catalog_img')){
+            $imageName = time().'.'.request()->catalog_img->getClientOriginalExtension();
+            $request->catalog_img->move($image_path, $imageName);
+            $catalogs->catalog_img = $imageName;
         }
 
         
         $catalogs->save();
-
-        // for ($i=0; $i < count($request->items); $i++) {
-        //     $inventory = Inventory::findOrfail($request->items[$i]);
-        //     $itemsSave = new CatalogItem();
-
-        //     $itemsSave->en_name = $inventory->en_name;
-        //     $itemsSave->ar_name = $inventory->ar_name;
-        //     $itemsSave->price = $inventory->price;
-        //     $itemsSave->quantity = $inventory->quantity;
-        //     $itemsSave->cataglog_id = $catalogs->id;
-        //     $itemsSave->inventory_id = $inventory->id;
-        //     $itemsSave->total_price = ($inventory->price * $inventory->quantity) + $inventory->add_value;
-        //     $itemsSave->save();
-
-        // }
-
-        
-
-      
 
         return redirect()->route('catalogs')->with('success','');
     }
@@ -116,9 +83,9 @@ class CatalogsController extends Controller
             abort(403);
         $lang = \Lang::getLocale();
         
-        $catalog = Catalog::select($lang.'_name as name','id',$lang.'_desc as desc','price','catalog_img','categories_id')->where('id',$id)->get()->first();
-        // $items = CatalogItem::select($lang.'_name as name','id','price','quantity','total_price','inventory_id')->where('cataglog_id',$id)->get();
-        return view('backend.pages.catalogs.show',compact('catalog'));
+        $catalog = Catalog::select($lang.'_name as name','id',$lang.'_desc as desc','catalog_img','categories_id')->where('id',$id)->get()->first();
+        $items = CatalogItem::select('*')->where('catalog_id',$id)->get();
+        return view('backend.pages.catalogs.show',compact('catalog','items'));
     }
 
     public function edit($id)
@@ -154,35 +121,22 @@ class CatalogsController extends Controller
         $catalogs->en_desc = $request->en_desc;
         $catalogs->ar_desc = $request->ar_desc;
         $catalogs->categories_id = $request->categories_id;
-        $catalogs->price = $request->price;
 
-        if ($request->hasFile('catalog_img')) {
-            $path = public_path() . '/catalogs/' . $catalogs->catalog_img;
+        $image_path = public_path().'/uploads/catalogs/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
+
+        if ($request->hasFile('catalog_img')){
+            $path = $image_path . $catalogs->catalog_img;
             if(file_exists($path)) {
                 File::delete($path);
             }
 
-            $image = $request->file('catalog_img');
-
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-
-            $destinationPath = public_path('/catalogs');
-
-            $resize_image = Image::make($image->getRealPath());
-
-            $resize_image->resize(150, 150, function($constraint){
-            $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $image_name);
-
-            $destinationPath = public_path('/catalogs');
-
-            $image->move($destinationPath, $image_name);
-            $catalogs->catalog_img = $image_name;
-
-
+            $imageName = time().'.'.request()->catalog_img->getClientOriginalExtension();
+            $request->catalog_img->move($image_path, $imageName);
+            $catalogs->catalog_img = $imageName;
         }
-
         
+
         $catalogs->save();
 
         return redirect()->route('catalogs')->with('success','');
@@ -193,8 +147,12 @@ class CatalogsController extends Controller
     {
         if(!Auth::user()->hasPermissionTo('delete_catalogs'))
             abort(403);
+
+        $image_path = public_path().'/uploads/catalogs/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
+
         $catalog = Catalog::findOrfail($id);
-        $path = public_path() . '/catalogs/' . $catalog->catalog_img;
+        $path = $image_path . $catalogs->catalog_img;
         if(file_exists($path)) {
             File::delete($path);
         }

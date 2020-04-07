@@ -5,11 +5,11 @@
 @section('title',__('tr.Orders'))
     
 @section('stylesheet')
-    
+   
 @endsection
 
 @section('content')
-    
+@php($langName = \Lang::getLocale().'_name')
 
 <div class="row">
     <div class="col-xl-12 order-lg-2 order-xl-1">
@@ -20,145 +20,98 @@
                         @lang('tr.Orders')
                     </h3>
                 </div>
-                <div class="kt-portlet__head-toolbar">
-                    
-                </div>
             </div>
-            <div class="kt-portlet__body kt-portlet__body--fit">
-                <div class="col-xl-12 order-lg-2 order-xl-1">
-
-                    <table id="example" class="display" style="width:100%;" class="table table-bordered dt-responsive">
-                        <thead>
-                            <tr>
-                                <th class="tdesign">#</th>
-                                <th class="tdesign">@lang('tr.Code')</th>
-                                <th class="tdesign">@lang('tr.Customer')</th>
-                                <th class="tdesign">@lang('tr.Order Data')</th>
-                                <th class="tdesign">@lang('tr.Day')</th>
-                                <th class="tdesign">@lang('tr.From') - @lang('tr.To')</th>
-                                <th class="tdesign">@lang('tr.Status')</th>
-                                <th class="tdesign">@lang('tr.Action')</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($orders as $index => $order)
-                            @php($order_data = json_decode($order->order_data,true))
-                            @php($count = count($order_data) / 4)
-                            <tr>
-                                <td class="tdesign">{{ $index+1 }}</td>
-                                <td class="tdesign">{{ $order->order_code }}</td>
-                                <td class="tdesign">{{ $order->customer->mobile }}</td>
-                                <td class="tdesign">
-                                    @for ($i = 0; $i < $count; $i++)
-                                        @php($title = 'title_'.$i)
-                                        @php($quantity = 'quantity_'.$i)
-                                        @php($total = 'total_'.$i)
-
-                                        <span style="color:#f05f78;font-style:italic;font-weight: bold;">{{ $order_data[$title].', Quantity: '.$order_data[$quantity].', Total: '.$order_data[$total].' '.$system_currency }}</span><br>
-                                    @endfor
-                                </td>
-                                <td class="tdesign">{{ $order->order_day }}</td>
-                                <td class="tdesign">{{ $order->order_from.' - '.$order->order_to }}</td>
-                                <td class="tdesign">
-                                    @if ($order->status == 'finished')
-                                        <span style="font-weight:bold;color:green">{{ __('tr.'.$order->status) }}</span>
-                                    @else
-                                        {{ __('tr.'.$order->status) }}
-                                    @endif
-                                </td>
-                                <td class="tdesign">
-
-                                <div class="dropdown dropdown-inline">
-                                    <button type="button" class="btn btn-default btn-icon-sm dropdown-toggle pinkbutton" style="color:white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        @lang('tr.Action')  	
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" style="">
-                                        <ul class="kt-nav">
-                                            
-                                            @can('show_orders')
-                                            <li class="kt-nav__item">
-                                                <a href="{{ route('show_orders',$order->id) }}" class="kt-nav__link">
-                                                    <i class="kt-nav__link-icon la la-eye"></i>
-                                                    <span class="kt-nav__link-text">@lang('tr.View')</span>
-                                                </a>
-                                            </li>
-                                            @endcan
-
-                                            @can('create_tasks')
-                                            <li class="kt-nav__item">
-                                                <a href="{{ route('tasksorders_inventory',$order->id) }}" class="kt-nav__link">
-                                                    <i class="kt-nav__link-icon la la-tasks"></i>
-                                                    <span class="kt-nav__link-text">@lang('tr.Tasks')</span>
-                                                </a>
-                                            </li>
-                                            @endcan
-
-                                            @can('edit_orders')
-                                            <li class="kt-nav__item">
-                                                <a href="{{ route('edit_orders',$order->id) }}" class="kt-nav__link">
-                                                    <i class="kt-nav__link-icon la la-edit"></i>
-                                                    <span class="kt-nav__link-text">@lang('tr.Edit')</span>
-                                                </a>
-                                            </li>
-                                            
-                                            {{-- <li class="kt-nav__item">
-                                                <a href="{{ route('return_items_orders',$order->id) }}" class="kt-nav__link">
-                                                    <i class="kt-nav__link-icon la la-send"></i>
-                                                    <span class="kt-nav__link-text">@lang('tr.Return Items')</span>
-                                                </a>
-                                            </li> --}}
-                                            @endcan
-
-                                            @can('delete_orders')
-                                            <li class="kt-nav__item">
-                                                <a href="{{ route('delete_orders',$order->id) }}" class="kt-nav__link">
-                                                    <i class="kt-nav__link-icon la la-trash"></i>
-                                                    <span class="kt-nav__link-text">@lang('tr.Delete')</span>
-                                                </a>
-                                            </li>
-                                            @endcan
-                                            
-                                        </ul>
-                                    </div>
-		                        </div>
-
-                                    
-                                    @can('edit_orders')
-                                    @if($order->editOrdeleteOrder($order->id) == 0)
-                                        @if($order->expiredOrder($order->id) != 'finished')
-                                            
-                                        @endif
-                                    @endif
-                                    @endcan
-
-                                    @can('delete_orders')
-                                    @if($order->editOrdeleteOrder($order->id) == 0)
-                                        @if($order->expiredOrder($order->id) != 'finished')
-                                            
-                                        @endif
-                                    @endif
-                                    @endcan
-                                </td>
-                            </tr>
-                            @endforeach
+            
+                @foreach ($orders as $order)
+            
+                <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample{{$order->id}}" style="padding:10px 20px;">
+                    <div class="card">
+                        <div class="card-header" id="heading{{$order->id}}">
+                            <div class="card-title collapsed" data-toggle="collapse" data-target="#collapse{{$order->id}}" aria-expanded="false" aria-controls="collapse{{$order->id}}">
+                                <i class="flaticon2-delivery-package"></i> {{$order->code}}  
+                                &nbsp;&nbsp;&nbsp;<a href="{{ route('tasksorders_inventory',$order->id) }}" class="pinkbutton">@lang('tr.Create Tasks')</a>
+                            </div>
+                        </div>
+                        <div id="collapse{{$order->id}}" class="collapse" aria-labelledby="heading{{$order->id}}" data-parent="#accordionExample{{$order->id}}" style="">
                             
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th class="tdesign">#</th>
-                                <th class="tdesign">@lang('tr.Code')</th>
-                                <th class="tdesign">@lang('tr.Customer')</th>
-                                <th class="tdesign">@lang('tr.Order Data')</th>
-                                <th class="tdesign">@lang('tr.Day')</th>
-                                <th class="tdesign">@lang('tr.From')&nbsp;@lang('tr.To')</th>
-                                <th class="tdesign">@lang('tr.Status')</th>
-                                <th class="tdesign">@lang('tr.Action')</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    
+                            <div class="row" style="padding: 10px; border: 1px dashed; width: 100%; margin-left: auto; margin-right: auto;">
+                                <div class="col-lg-6">
+                                    <h5>@lang('tr.Code'): {{ $order->code }}</h5>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>@lang('tr.User'): {{ $order->user_phone }}</h5>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>@lang('tr.Quantity'): {{ $order->quantity }}</h5>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>@lang('tr.Price'): {{ $order->price.' '.$system_currency }}</h5>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>@lang('tr.Address'): {{ $order->address }}</h5>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>@lang('tr.Day / Time'): {{ $order->order_day }}</h5>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <form action="{{ route('printOrder') }}" style="width:100%;display: inherit;" method="post">
+                                @csrf
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                <select name="contract" id="" class="form-control" style="width: 96%; margin-right: 20px;">
+                                    @foreach ($contracts as $contract)
+                                        <option value="{{ $contract->id }}">{{ $contract->$langName }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i></button>
+                                </form>
+                                
+                            </div>
+                            <hr>
+                            <div class="card-body">
+                                <table class="display example" style="width:100%;" class="table table-bordered dt-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th class="tdesign">#</th>
+                                            <th class="tdesign">@lang('tr.Item')</th>
+                                            <th class="tdesign">@lang('tr.Quantity')</th>
+                                            <th class="tdesign">@lang('tr.Price')</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @php($index = 1)
+                                    @foreach ($ordersData as $data)
+                                        @if ($data->mainorder_id == $order->id)
+                                            <tr>
+
+                                                <td class="tdesign">{{ $index }}</td>
+                                                <td class="tdesign">{{ $data->name }}</td>
+                                                <td class="tdesign">{{ $data->quantity }}</td>
+                                                <td class="tdesign">{{ $data->price.' '.$system_currency }}</td>
+                                                
+                                                
+                                            </tr>
+                                            @php($index++)
+                                        @endif
+                                    @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="tdesign">#</th>
+                                            <th class="tdesign">@lang('tr.Item')</th>
+                                            <th class="tdesign">@lang('tr.Quantity')</th>
+                                            <th class="tdesign">@lang('tr.Price')</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                        
                 </div>
-            </div>
+                    @endforeach
+            
         </div>
     </div>
 </div>
@@ -174,8 +127,6 @@
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#example').DataTable({responsive:true});
-    } );
+    $('.example').DataTable({ responsive: true });
 </script>
 @endsection

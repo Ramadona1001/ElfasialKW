@@ -26,7 +26,7 @@ class InventoryController extends Controller
 
         $lang = \Lang::getLocale();
         $customers = Customer::all();
-        $inventory = Inventory::select($lang.'_name as name','id','price','quantity','add_value','total_orignal_price','orignal_price','total_price','user_id','notes',$lang.'_desc','inventory_image')->get();
+        $inventory = Inventory::select($lang.'_name as name','id','price','quantity','user_id','notes',$lang.'_desc','inventory_image')->get();
         return view('backend.pages.inventory.index',compact('inventory','customers'));
     }
 
@@ -51,9 +51,7 @@ class InventoryController extends Controller
             'en_name' => 'required|max:255|min:2',
             'ar_name' => 'required|max:255|min:2',
             'quantity' => 'required|numeric|min:0|not_in:0',
-            'orignal_price' => 'required|numeric|min:0|not_in:0',
             'price' => 'required|numeric|min:0|not_in:0',
-            'add_value' => 'required|numeric',
             'inventory_image' => 'required',
             'en_desc' => 'required',
             'ar_desc' => 'required',
@@ -65,35 +63,20 @@ class InventoryController extends Controller
         $inventory->ar_name = $request->ar_name;
         $inventory->quantity = $request->quantity;
         $inventory->price = $request->price;
-        $inventory->orignal_price = $request->orignal_price;
-        $inventory->add_value = $request->add_value;
-        $inventory->total_price = $request->add_value + ($request->quantity * $request->price);
-        $inventory->total_orignal_price = $request->quantity * $request->orignal_price;
         $inventory->notes = $request->notes;
         $inventory->user_id = $request->user_id;
         $inventory->en_desc = $request->en_desc;
         $inventory->ar_desc = $request->ar_desc;
 
-        if ($request->hasFile('inventory_image')) {
+        $image_path = public_path().'/uploads/inventories/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
 
-            $image = $request->file('inventory_image');
-
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-
-            $destinationPath = public_path('/inventories');
-
-            $resize_image = Image::make($image->getRealPath());
-
-            $resize_image->resize(150, 150, function($constraint){
-            $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $image_name);
-
-            $destinationPath = public_path('/inventories');
-
-            $image->move($destinationPath, $image_name);
-            $inventory->inventory_image = $image_name;
-
+        if ($request->hasFile('inventory_image')){
+            $imageName = time().'.'.request()->inventory_image->getClientOriginalExtension();
+            $request->inventory_image->move($image_path, $imageName);
+            $inventory->inventory_image = $imageName;
         }
+
 
         $inventory->save();
 
@@ -106,7 +89,7 @@ class InventoryController extends Controller
         if(!Auth::user()->hasPermissionTo('show_inventory'))
             abort(403);
         $lang = \Lang::getLocale();
-        $item = Inventory::select($lang.'_name as name','id','price','quantity','add_value','total_orignal_price','orignal_price','total_price','user_id','notes','en_desc','ar_desc','inventory_image')->where('id',$id)->get()->first();
+        $item = Inventory::select('*')->where('id',$id)->get()->first();
         
         return view('backend.pages.inventory.show',compact('item'));
     }
@@ -144,50 +127,32 @@ class InventoryController extends Controller
             'en_name' => 'required|max:255|min:2',
             'ar_name' => 'required|max:255|min:2',
             'quantity' => 'required|numeric|min:0|not_in:0',
-            'orignal_price' => 'required|numeric|min:0|not_in:0',
             'price' => 'required|numeric|min:0|not_in:0',
-            'add_value' => 'required|numeric',
         ]);
 
         $inventory->en_name = $request->en_name;
         $inventory->ar_name = $request->ar_name;
         $inventory->quantity = $request->quantity;
         $inventory->price = $request->price;
-        $inventory->orignal_price = $request->orignal_price;
-        $inventory->add_value = $request->add_value;
-        $inventory->total_price = $request->add_value + ($request->quantity * $request->price);
-        $inventory->total_orignal_price = $request->quantity * $request->orignal_price;
         $inventory->notes = $request->notes;
         $inventory->user_id = $request->user_id;
         $inventory->en_desc = $request->en_desc;
         $inventory->ar_desc = $request->ar_desc;
 
-        if ($request->hasFile('inventory_image')) {
+        $image_path = public_path().'/uploads/inventories/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
 
-            $path = public_path() . '/inventories/' . $inventory->inventory_image;
+        if ($request->hasFile('inventory_image')){
+            $path = $image_path . $inventory->inventory_image;
             if(file_exists($path)) {
                 File::delete($path);
             }
-
-            $image = $request->file('inventory_image');
-
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-
-            $destinationPath = public_path('/inventories');
-
-            $resize_image = Image::make($image->getRealPath());
-
-            $resize_image->resize(150, 150, function($constraint){
-            $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $image_name);
-
-            $destinationPath = public_path('/inventories');
-
-            $image->move($destinationPath, $image_name);
-            $inventory->inventory_image = $image_name;
-
+            $imageName = time().'.'.request()->inventory_image->getClientOriginalExtension();
+            $request->inventory_image->move($image_path, $imageName);
+            $inventory->inventory_image = $imageName;
         }
 
+        
         $inventory->save();
 
         return redirect()->route('inventory')->with('success','');
@@ -199,7 +164,9 @@ class InventoryController extends Controller
         if(!Auth::user()->hasPermissionTo('delete_inventory'))
             abort(403);
         $inventory = Inventory::findOrfail($id);
-        $path = public_path() . '/inventories/' . $inventory->inventory_image;
+        $image_path = public_path().'/uploads/inventories/';
+        File::makeDirectory($image_path, $mode = 0777, true, true);
+        $path = $image_path . $inventory->inventory_image;
         if(file_exists($path)) {
             File::delete($path);
         }

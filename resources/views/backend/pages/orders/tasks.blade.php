@@ -50,68 +50,48 @@
                 <form action="{{ route('store_tasksorders_inventory') }}" method="post" enctype="multipart/form-data">
                     @csrf
                    <input type="hidden" name="order_id" value="{{ $orders->id }}">
-                   <input type="hidden" name="customer_id" value="{{ $orders->customer->id }}">
+                   <input type="hidden" name="customer_phone" value="{{ $orders->user_phone }}">
                    <div class="row">
                        <div class="col-lg-6">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="order_id">@lang('tr.Order')</label>
-                                    <p class="formP">{{ $orders->order_code }}</p>
+                                    <p class="formP">{{ $orders->code }}</p>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="order_id">@lang('tr.Address')</label>
                                     <p class="formP">{{ $orders->address }}</p>
                                 </div>
                             </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="order_id">@lang('tr.Customer')</label>
+                                    <p class="formP">{{ $orders->user_phone }}</p>
+                                </div>
+                            </div>
                         </div>
     
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="order_id">@lang('tr.Day')</label>
+                                    <label for="order_id">@lang('tr.Day / Time')</label>
                                     <p class="formP">{{ $orders->order_day }}</p>
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="order_id">@lang('tr.From')</label>
-                                    <p class="formP">{{ $orders->order_from }}</p>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="order_id">@lang('tr.To')</label>
-                                    <p class="formP">{{ $orders->order_to }}</p>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="order_id">@lang('tr.Customer')</label>
-                                    <p class="formP">{{ $orders->customer->name }}</p>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="order_id">@lang('tr.Mobile')</label>
-                                    <p class="formP">{{ $orders->customer->mobile }}</p>
-                                </div>
-                            </div>
                             
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label for="order_id">@lang('tr.Order Data')</label>
-                                    <select name="order_task" class="form-control" id="order_id" required>
+                                    <select name="order_data" class="form-control" id="order_id" required>
                                         <option value="">@lang('tr.Order Data')</option>
-                                        @foreach($all_orders as $index => $value)
-                                        <option value="{{ $value }}">{{ $value }}</option>
+                                        @foreach($orders_data as $index => $value)
+                                        <option value="{{ $value->id }}">{{ $value->name.' x'.$value->quantity }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -159,7 +139,7 @@
                             <div class="col-lg-6" id="taskDay" style="display:none;">
                                 <div class="form-group">
                                     <label for="task_date">@lang('tr.Day')</label>
-                                    <input type="date" name="task_date" id="task_date" class="form-control" required>
+                                    <input type="datetime-local" name="task_date" id="task_date" class="form-control" required>
                                 </div>
                             </div>
 

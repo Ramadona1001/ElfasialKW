@@ -10,7 +10,7 @@
 
 @section('content')
 
-
+@php($langName = \Lang::getLocale().'_name')
 <div class="row">
     <div class="col-xl-12 order-lg-2 order-xl-1">
         <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
@@ -39,20 +39,12 @@
                         @foreach ($buffets as $index => $buffet)
                         <tr>
                             <td class="tdesign">{{ $index+1 }}</td>
-                            <td class="tdesign">{{ $buffet->name }}</td>
+                            <td class="tdesign">{{ $buffet->iteminventory->$langName }}</td>
                             <td class="tdesign">{{ $buffet->no_members }}</td>
-                            <td class="tdesign">{{ $buffet->price.' '.$system_currency }}</td>
-                            <td class="tdesign"><img src="{{ asset('buffets/'.$buffet->buffets_image) }}" class="img-responsive" style="width:100px;"></td>
+                            <td class="tdesign">{{ $buffet->iteminventory->price.' '.$system_currency }}</td>
+                            <td class="tdesign"><img src="{{ asset('uploads/itemsinventories/'.$buffet->iteminventory->inventory_image) }}" class="img-responsive" style="width:100px;"></td>
                             <td class="ttdesign">
                                 
-                                @can('show_buffets')
-                                {{-- <a href="{{ route('show_buffets',$buffet->id) }}" class="pinkbutton">@lang('tr.View')</a>&nbsp; --}}
-                                @endcan
-    
-                                @can('edit_buffets')
-                                <a href="{{ route('edit_buffets',$buffet->id) }}" class="bluebutton">@lang('tr.Edit')</a>&nbsp;
-                                @endcan
-    
                                 @can('delete_buffets')
                                 <a onclick="return confirm('Are You Sure ?')" class="redbutton" href="{{ route('delete_item_buffets',$buffet->id) }}">@lang('tr.Delete')</a>
                                 @endcan
